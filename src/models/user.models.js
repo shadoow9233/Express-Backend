@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt"
-import { Mongoose, Schema } from "mongoose";
+import mongoose from "mongoose";
+const { Schema } = mongoose;
 const userSchema = new Schema({
   username: {
     type:String,
@@ -16,7 +17,7 @@ const userSchema = new Schema({
     lowercase:true,
     trim:true,
   },
-  fullname: {
+  fullName: {
     type:String,
     require:true,
     trim:true,
@@ -33,7 +34,7 @@ const userSchema = new Schema({
     require:true,
   },
   watchHistory:{
-    type:string,
+    type:String,
     require:[true,'password is required']
   },
   refreshToken:{
@@ -41,7 +42,7 @@ const userSchema = new Schema({
      
   }
 
-},{timestamps});
+},{timestamps:true});
 
 userSchema.pre("save", async function (next) {
     if(!this.isModified("password")) return next();
@@ -75,4 +76,4 @@ userSchema.methods.generateRefreshToken = function(){
         }
     )
 }
-export const User = Mongoose.model("User", userSchema);
+export const User = mongoose.model("User", userSchema);
